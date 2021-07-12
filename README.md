@@ -2,6 +2,8 @@
 
 Showing currently playing track in tmux status bar with music controls
 
+![Screenshot](https://raw.githubusercontent.com/spywhere/tmux-now-playing/master/images/screenshot.png)
+
 ## Integrations
 
 - (macOS only) `osascript` (AppleScript) - enable Spotify, iTunes/Music
