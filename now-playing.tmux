@@ -6,20 +6,20 @@ source "$CURRENT_DIR/scripts/helpers.sh"
 
 status_key="\#{now_playing}"
 
-# now_playing_playing_icon=">"
-# now_playing_playing_icon="▶"
-# now_playing_paused_icon=" "
+# @now-playing-playing-icon=">"
+# @now-playing-playing-icon="▶"
+# @now-playing-paused-icon=" "
 
-# now_playing_auto_interval="yes"
-# now_playing_playing_interval="1"
-# now_playing_paused_interval="5"
+# @now-playing-auto-interval="yes"
+# @now-playing-playing-interval="1"
+# @now-playing-paused-interval="5"
 
-# now_playing_status_format="{icon}{scrollable} [{position}/{duration}]"
-# now_playing_scrollable_format="{artist} - {title}"
-# now_playing_scrollable_threshold="25"
+# @now-playing-status-format="{icon}{scrollable} [{position}/{duration}]"
+# @now-playing-scrollable-format="{artist} - {title}"
+# @now-playing-scrollable-threshold="25"
 
-# now_playing_mpd_host="127.0.0.1"
-# now_playing_mpd_port="6600"
+# @now-playing-mpd-host="127.0.0.1"
+# @now-playing-mpd-port="6600"
 
 do_interpolation() {
   local interpolated_text="$1"

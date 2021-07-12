@@ -5,8 +5,8 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$(dirname "$CURRENT_DIR")/scripts/cache.sh"
 source "$(dirname "$CURRENT_DIR")/scripts/helpers.sh"
 
-MPD_HOST="$(get_tmux_option "@now_playing_mpd_host" "127.0.0.1")"
-MPD_PORT="$(get_tmux_option "@now_playing_mpd_port" "6600")"
+MPD_HOST="$(get_tmux_option "@now-playing-mpd-host" "127.0.0.1")"
+MPD_PORT="$(get_tmux_option "@now-playing-mpd-port" "6600")"
 
 is_running() {
   if (printf "close\n" | nc "$MPD_HOST" "$MPD_PORT" | grep -q "OK MPD"); then

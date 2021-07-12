@@ -50,24 +50,24 @@ main() {
   if test -z "$music_data"; then
     # no player is running
     printf ""
-    if test "$(get_tmux_option "@now_playing_auto_interval" "no")" = "yes"; then
-      set_tmux_option "status-interval" "$(get_tmux_option "@now_playing_paused_interval" "5")"
+    if test "$(get_tmux_option "@now-playing-auto-interval" "no")" = "yes"; then
+      set_tmux_option "status-interval" "$(get_tmux_option "@now-playing-paused-interval" "5")"
     fi
     exit
   fi
 
   local player_state="$(printf "%s" "$music_data" | awk 'NR==1')"
-  local player_icon="$(get_tmux_option "@now_playing_paused_icon" " ")"
+  local player_icon="$(get_tmux_option "@now-playing-paused-icon" " ")"
 
   if test "$player_state" = "playing"; then
-    player_icon="$(get_tmux_option "@now_playing_playing_icon" ">")"
+    player_icon="$(get_tmux_option "@now-playing-playing-icon" ">")"
   fi
 
-  if test "$(get_tmux_option "@now_playing_auto_interval" "no")" = "yes"; then
+  if test "$(get_tmux_option "@now-playing-auto-interval" "no")" = "yes"; then
     if test "$player_state" = "playing"; then
-      set_tmux_option "status-interval" "$(get_tmux_option "@now_playing_playing_interval" "5")"
+      set_tmux_option "status-interval" "$(get_tmux_option "@now-playing-playing-interval" "5")"
     else
-      set_tmux_option "status-interval" "$(get_tmux_option "@now_playing_paused_interval" "5")"
+      set_tmux_option "status-interval" "$(get_tmux_option "@now-playing-paused-interval" "5")"
     fi
   fi
 
