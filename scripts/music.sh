@@ -86,6 +86,7 @@ main() {
     "{position_sec}"
     "{duration}"
     "{duration_sec}"
+    # {percent}
   )
   local interpolation_value=(
     "$player_icon"

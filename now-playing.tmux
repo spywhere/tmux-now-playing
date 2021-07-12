@@ -38,7 +38,7 @@ main() {
   update_tmux_option "status-right"
   update_tmux_option "status-left"
 
-  local keys="$(get_tmux_option "@now-playing-pause-key" ",")"
+  local keys="$(get_tmux_option "@now-playing-play-pause-key" ",")"
   local key
   for key in $keys; do
     tmux unbind "$key"
@@ -51,13 +51,13 @@ main() {
     tmux bind-key "$key" run-shell -b "bash $CURRENT_DIR/scripts/music.sh --cmd stop"
   done
 
-  keys="$(get_tmux_option "@now-playing-stop-key" "\\;")"
+  keys="$(get_tmux_option "@now-playing-previous-key" "\\;")"
   for key in $keys; do
     tmux unbind "$key"
     tmux bind-key "$key" run-shell -b "bash $CURRENT_DIR/scripts/music.sh --cmd previous"
   done
 
-  keys="$(get_tmux_option "@now-playing-stop-key" "'")"
+  keys="$(get_tmux_option "@now-playing-next-key" "'")"
   for key in $keys; do
     tmux unbind "$key"
     tmux bind-key "$key" run-shell -b "bash $CURRENT_DIR/scripts/music.sh --cmd next"
