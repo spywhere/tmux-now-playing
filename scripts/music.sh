@@ -65,7 +65,7 @@ main() {
 
   if test "$(get_tmux_option "@now-playing-auto-interval" "no")" = "yes"; then
     if test "$player_state" = "playing"; then
-      set_tmux_option "status-interval" "$(get_tmux_option "@now-playing-playing-interval" "5")"
+      set_tmux_option "status-interval" "$(get_tmux_option "@now-playing-playing-interval" "1")"
     else
       set_tmux_option "status-interval" "$(get_tmux_option "@now-playing-paused-interval" "5")"
     fi
