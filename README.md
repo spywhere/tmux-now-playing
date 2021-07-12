@@ -156,7 +156,7 @@ functionalities (most of these tools should be already installed on most unix sy
 - `uname`
 - `wc`
 
-### Using TPM
+### Using [TPM](https://github.com/tmux-plugins/tpm)
 
 ```
 set -g @plugin 'spywhere/tmux-now-playing'
