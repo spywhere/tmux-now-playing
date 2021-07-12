@@ -9,6 +9,9 @@ MPD_HOST="$(get_tmux_option "@now-playing-mpd-host" "127.0.0.1")"
 MPD_PORT="$(get_tmux_option "@now-playing-mpd-port" "6600")"
 
 is_running() {
+  if ! test -n "$(command -v nc)"; then
+    return 1
+  fi
   if (printf "close\n" | nc "$MPD_HOST" "$MPD_PORT" | grep -q "OK MPD"); then
     return 0
   else
