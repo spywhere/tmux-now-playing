@@ -89,14 +89,15 @@ Values: number
 
 #### Components
 
-- `{icon}`
-- `{scrollable}`
-- `{title}` (Scrollable)
-- `{artist}` (Scrollable)
-- `{position}`
-- `{position_sec}`
-- `{duration}`
-- `{duration_sec}`
+- `{icon}` A string from `@now-playing-playing-icon` or
+`@now-playing-paused-icon` depends on the music player state
+- `{scrollable}` A scrolling interpolated string from `@now-playing-scrollable-format`
+- `{title}` (Scrollable) A track title
+- `{artist}` (Scrollable) A track artist
+- `{position}` A playing position in `mm:ss` format with zero-padded
+- `{position_sec}` A playing position in seconds
+- `{duration}` A track duration in `mm:ss` format with zero-padded
+- `{duration_sec}` A track duration in seconds
 
 ## Key Bindings
 
