@@ -24,7 +24,7 @@ Default: `{icon} {scrollable} [{position}/{duration}]`
 Values: string with components
 - `@now-playing-scrollable-format`  
 Description: A scrolling interpolated string with components for `{scrollable}`
-component  
+component (see scrollable component section below for more details)  
 Default: `{artist} - {title}`  
 Values: string with components
 - `@now-playing-scrollable-threshold`  
@@ -93,13 +93,44 @@ Values: number
 
 - `{icon}` A string from `@now-playing-playing-icon` or
 `@now-playing-paused-icon` depends on the music player state
-- `{scrollable}` A scrolling interpolated string from `@now-playing-scrollable-format`
+- `{scrollable}` A scrolling interpolated string from
+`@now-playing-scrollable-format` (see scrollable component section below for more details)
 - `{title}` (Scrollable) A track title
 - `{artist}` (Scrollable) A track artist
 - `{position}` A playing position in `mm:ss` format with zero-padded
 - `{position_sec}` A playing position in seconds
 - `{duration}` A track duration in `mm:ss` format with zero-padded
 - `{duration_sec}` A track duration in seconds
+
+#### Scrollable Components
+
+When specific component is too long to display (per
+`@now-playing-scrollable-threshold` value), it will turned itself into a
+scrolling one. This scrolling will be padded with 3 spaces and based on the
+playing position of the current track.
+
+If a component is not exceeding the threshold, it will simply be a static one.
+
+So if the threshold is set to `10` and a song name is `This is too long`, a
+`{title}` component will be shown as...
+
+```
+[00:00] This is to
+[00:01] his is too
+[00:02] is is too 
+[00:03] s is too l
+[00:04]  is too lo
+[00:05] is too lon
+...
+[00:09] oo long   
+[00:10] o long   T
+[00:11]  long   Th
+[00:12] long   Thi
+```
+
+Now, if all scrollable component in the `{scrollable}` component is exceeding
+the threshold, the whole `{scrollable}` component itself will be expanded and
+turned into a scrolling one instead.
 
 ## Key Bindings
 
