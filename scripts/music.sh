@@ -79,6 +79,39 @@ main() {
   local track_artist_length="$(printf "%s" "$track_artist" | wc -m)"
   local app_name="$(printf "%s" "$music_data" | awk 'NR==6')"
 
+  local progress_size="$(get_tmux_option "@now-playing-progress-size" "15")"
+  local progress_style="$(get_tmux_option "@now-playing-progress-style" "")"
+  local progress_done="$(printf "$progress_style" | cut -c1)"
+  local progress_current="$(printf "$progress_style" | cut -c2)"
+  local progress_remain="$(printf "$progress_style" | cut -c3)"
+
+  if test -z "$progress_done"; then
+    # No character
+    progress_done="O"
+    progress_current="o"
+    progress_remain="."
+  elif test -z "$progress_current"; then
+    # Only specify 1
+    progress_current="$progress_done"
+    progress_remain=" "
+  elif test -z "$progress_remain"; then
+    # Only specify 2
+    progress_remain="$progress_current"
+    progress_current="$progress_done"
+  fi
+
+  local progress="$(( track_position * 100 / track_duration ))"
+  local progress_length="$(( progress * progress_size / 100 ))"
+  local progress_left=""
+  local progress_right="$(printf "%.0s$progress_remain" $(seq $(( progress_size - progress_length - 1 ))))"
+  if test "$progress_length" -gt 0; then
+    progress_left="$(printf "%.0s$progress_done" $(seq $progress_length))"
+  fi
+  if test "$progress_length" -gt $(( progress_size - 2 )); then
+    progress_right=""
+  fi
+  local progress_bar="${progress_left}$progress_current${progress_right}"
+
   local interpolation_key=(
     "{icon}"
     "{title}"
@@ -89,6 +122,7 @@ main() {
     "{duration_sec}"
     "{percent}"
     "{app}"
+    "{progress_bar}"
   )
   local interpolation_value=(
     "$player_icon"
@@ -98,8 +132,9 @@ main() {
     "$track_position"
     "$(to_readable_time "$track_duration")"
     "$track_duration"
-    "$(( track_position * 100 / track_duration ))"
+    "$progress"
     "$app_name"
+    "$progress_bar"
   )
   local scrollable_threshold="$(get_tmux_option "@now-playing-scrollable-threshold" "25")"
   local scrollable_key=(
@@ -111,7 +146,7 @@ main() {
     "$(scrolling_text "$track_artist" "$scrollable_threshold" "$track_position" "$track_artist_length")"
   )
 
-  local default_format="{icon} {scrollable} [{position}/{duration}]"
+  local default_format="{icon} {scrollable} [{position}/{duration}] [{progress_bar}] {percent}%"
   local status_format="$(get_tmux_option "@now-playing-status-format" "$default_format")"
 
   local scrollable_format_key="{scrollable}"
