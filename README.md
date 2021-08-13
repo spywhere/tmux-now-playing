@@ -80,11 +80,11 @@ Values: number
 
 ### Music Player
 
-- `@now-playing-mpd-host`
+- `@now-playing-mpd-host`  
 Description: An IP address to MPD server  
 Default: `127.0.0.1`  
 Values: string
-- `@now-playing-mpd-port`
+- `@now-playing-mpd-port`  
 Description: A port number of MPD server  
 Default: `6600`  
 Values: number
@@ -101,6 +101,8 @@ Values: number
 - `{position_sec}` A playing position in seconds
 - `{duration}` A track duration in `mm:ss` format with zero-padded
 - `{duration_sec}` A track duration in seconds
+- `{percent}` A playing position in percent (without percent sign)
+- `{app}` A music player name
 
 #### Scrollable Components
 

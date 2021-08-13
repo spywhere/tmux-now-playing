@@ -77,6 +77,7 @@ main() {
   local track_title_length="$(printf "%s" "$track_title" | wc -m)"
   local track_artist="$(printf "%s" "$music_data" | awk 'NR==5')"
   local track_artist_length="$(printf "%s" "$track_artist" | wc -m)"
+  local app_name="$(printf "%s" "$music_data" | awk 'NR==6')"
 
   local interpolation_key=(
     "{icon}"
@@ -86,7 +87,8 @@ main() {
     "{position_sec}"
     "{duration}"
     "{duration_sec}"
-    # {percent}
+    "{percent}"
+    "{app}"
   )
   local interpolation_value=(
     "$player_icon"
@@ -96,6 +98,8 @@ main() {
     "$track_position"
     "$(to_readable_time "$track_duration")"
     "$track_duration"
+    "$(( track_position * 100 / track_duration ))"
+    "$app_name"
   )
   local scrollable_threshold="$(get_tmux_option "@now-playing-scrollable-threshold" "25")"
   local scrollable_key=(

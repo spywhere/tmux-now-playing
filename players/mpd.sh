@@ -58,7 +58,7 @@ get_music_data() {
     status="paused"
   fi
 
-  printf "%s\n%s\n%s\n%s\n%s" "$status" "$position" "$duration" "$title" "$artist"
+  printf "%s\n%s\n%s\n%s\n%s\nMPD" "$status" "$position" "$duration" "$title" "$artist"
 }
 
 send_command() {

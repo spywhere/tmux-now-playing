@@ -37,7 +37,7 @@ get_music_data() {
   local music_data="$(_cache_value music_data _music_data)"
 
   if test -z "$1"; then
-    printf "%s" "$music_data" | awk 'NR<=5'
+    printf "%s" "$music_data" | awk 'NR<=6'
   else
     printf "%s" "$music_data" | awk "$1"
   fi
