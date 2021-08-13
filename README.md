@@ -181,6 +181,22 @@ run-shell ~/target/path/now-playing.tmux
 Once you reloaded your tmux configuration, all the format strings in the status
 bar should be updated automatically.
 
+## Troubleshoots
+
+### Playing status is not update
+
+First, locate the temporary directory that use for storing caches by running
+
+```
+echo "${TMPDIR:-${TMP:-${TEMP:-/tmp}}}"
+```
+
+If the temporary directory located above does not exists, try checking on `~/.tmp`.
+
+Then remove all the files under `tmux-now-playing-XXX` where `XXX` is any number.
+
+This should remove all the caches which plugin will regenerate itself when needed.
+
 ## License
 
 MIT
