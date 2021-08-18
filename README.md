@@ -6,8 +6,9 @@ Showing currently playing track in tmux status bar with music controls
 
 ## Integrations
 
-- (macOS only) `osascript` (AppleScript) - enable Spotify, iTunes/Music
-integration (and more in the future)
+- (macOS only) `osascript` (AppleScript) - enable the following integrations and more in the future
+  - Spotify
+  - iTunes / Music
 - `mpd` ([Music Player Daemon](https://www.musicpd.org)) through `nc` (netcat)
 
 ## Configurations
