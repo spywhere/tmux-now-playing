@@ -12,7 +12,7 @@ integration (and more in the future)
 
 ## Configurations
 
-Use `#{now-playing}` in `status-left` or `status-right` to show a currently
+Use `#{now_playing}` in `status-left` or `status-right` to show a currently
 playing track in supported music player
 
 ### Status Format
