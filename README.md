@@ -18,7 +18,7 @@ playing track in supported music player
 ### Status Format
 
 - `@now-playing-status-format`  
-Description: An interpolated string with components to show for `#{now-playing}`
+Description: An interpolated string with components to show for `#{now_playing}`
 component  
 Default: `{icon} {scrollable} [{position}/{duration}]`  
 Values: string with components
