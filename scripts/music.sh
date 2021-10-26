@@ -8,6 +8,7 @@ source "$CURRENT_DIR/helpers.sh"
 players=(
   "$(dirname "$CURRENT_DIR")/players/mpd.sh"
   "$(dirname "$CURRENT_DIR")/players/applescript.sh"
+  "$(dirname "$CURRENT_DIR")/players/cscript.sh"
 )
 
 is_playing() {

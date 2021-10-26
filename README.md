@@ -9,6 +9,8 @@ Showing currently playing track in tmux status bar with music controls
 - (macOS only) `osascript` (AppleScript) - enable the following integrations and more in the future
   - Spotify
   - iTunes / Music
+- (Windows only, experimental) `cscript` (Windows Script Host) - enable the following integrations and more in the future
+  - iTunes
 - `mpd` ([Music Player Daemon](https://www.musicpd.org)) through `nc` (netcat)
 
 ## Configurations
