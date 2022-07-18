@@ -26,7 +26,7 @@ scrolling_text_bin() {
     text_length=$(printf "%s" "$1" | wc -m)
   fi
   if test "$text_length" -gt "$2"; then
-    "$(dirname "$CURRENT_DIR")/scroll" "$1..." "$3" "$2"
+    "$(dirname "$CURRENT_DIR")/scroll" "$1   " "$3" "$2"
   else
     printf "%s" "$1"
   fi

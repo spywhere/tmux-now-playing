@@ -30,6 +30,23 @@ main() {
     remote_command="$2"
   fi
 
+  if test -z "$remote_command" && test -n "$NOW_PLAYING_SHADA"; then
+    if test -f "$NOW_PLAYING_SHADA"; then
+      local app="$(cat "$NOW_PLAYING_SHADA" | awk 'NR==1')"
+
+      if test "$app" != "tmux"; then
+        local time="$(cat "$NOW_PLAYING_SHADA" | awk 'NR==2')"
+
+        if test "$(date '+%s')" -lt "$(( time + 10 ))"; then
+          printf 'shared session in progress'
+          exit
+        else
+          rm -f "$NOW_PLAYING_SHADA"
+        fi
+      fi
+    fi
+  fi
+
   local music_data=""
 
   for ((i=0; i<${#players[@]}; i++)); do
