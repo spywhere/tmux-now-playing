@@ -38,7 +38,7 @@ main() {
         local time="$(cat "$NOW_PLAYING_SHADA" | awk 'NR==2')"
 
         if test "$(date '+%s')" -lt "$(( time + 10 ))"; then
-          printf 'shared session in progress'
+          printf '%s' "$(get_tmux_option "@now-playing-shared-session" "")"
           exit
         else
           rm -f "$NOW_PLAYING_SHADA"
