@@ -108,7 +108,7 @@ main() {
     "{artist}"
   )
   local scrolling_tool="scrolling_text"
-  if test -n "$(command -v "$CURRENT_DIR/scroll")"; then
+  if test -n "$(command -v "$(dirname "$CURRENT_DIR")/scroll")"; then
     scrolling_tool="scrolling_text_bin"
   fi
 

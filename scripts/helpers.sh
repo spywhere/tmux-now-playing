@@ -1,5 +1,3 @@
-CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
 set_tmux_option() {
   local option=$1
   local value=$2
@@ -28,7 +26,7 @@ scrolling_text_bin() {
     text_length=$(printf "%s" "$1" | wc -m)
   fi
   if test "$text_length" -gt "$2"; then
-    "$CURRENT_DIR/scroll" "$1   " "$3" "$2"
+    "$(dirname "$CURRENT_DIR")/scroll" "$1..." "$3" "$2"
   else
     printf "%s" "$1"
   fi
