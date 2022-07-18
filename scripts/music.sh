@@ -107,10 +107,10 @@ main() {
     "{title}"
     "{artist}"
   )
-  local scrollable_value=(
-    "$(scrolling_text "$track_title" "$scrollable_threshold" "$track_position" "$track_title_length")"
-    "$(scrolling_text "$track_artist" "$scrollable_threshold" "$track_position" "$track_artist_length")"
-  )
+  local scrolling_tool="scrolling_text"
+  if test -n "$(command -v "$CURRENT_DIR/scroll")"; then
+    scrolling_tool="scrolling_text_bin"
+  fi
 
   local default_format="{icon} {scrollable} [{position}/{duration}]"
   local status_format="$(get_tmux_option "@now-playing-status-format" "$default_format")"
@@ -132,9 +132,13 @@ main() {
   done
 
   if test "$exceeding_placeholder_count" -ge "$placeholder_length"; then
-    scrollable_format="$(scrolling_text "$scrollable_format_whole" "$(( placeholder_length * scrollable_threshold + non_placeholder_length ))" "$track_position")"
+    scrollable_format="$("$scrolling_tool" "$scrollable_format_whole" "$(( placeholder_length * scrollable_threshold + non_placeholder_length ))" "$track_position")"
     status_format="${status_format//${scrollable_format_key}/${scrollable_format}}"
   else
+    local scrollable_value=(
+      "$("$scrolling_tool" "$track_title" "$scrollable_threshold" "$track_position" "$track_title_length")"
+      "$("$scrolling_tool" "$track_artist" "$scrollable_threshold" "$track_position" "$track_artist_length")"
+    )
     for ((i=0; i<${#scrollable_key[@]}; i++)); do
       scrollable_format=${scrollable_format//${scrollable_key[$i]}/${scrollable_value[$i]}}
     done

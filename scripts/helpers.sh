@@ -1,3 +1,5 @@
+CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 set_tmux_option() {
   local option=$1
   local value=$2
@@ -15,6 +17,20 @@ get_tmux_option() {
     echo "$default_value"
   else
     echo "$option_value"
+  fi
+}
+
+scrolling_text_bin() {
+  local text_length
+  if test $# -ge 4; then
+    text_length="$4"
+  else
+    text_length=$(printf "%s" "$1" | wc -m)
+  fi
+  if test "$text_length" -gt "$2"; then
+    "$CURRENT_DIR/scroll" "$1   " "$3" "$2"
+  else
+    printf "%s" "$1"
   fi
 }
 

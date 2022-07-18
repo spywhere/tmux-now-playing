@@ -161,6 +161,17 @@ functionalities (most of these tools should be already installed on most unix sy
 - `uname`
 - `wc`
 
+### Scroll Tool
+
+This plugin shipped with optimized scroller included. You can build the scroller
+tool for fast performance on scrollable components using the following command.
+
+```sh
+$CC -o scroll scroll.c
+```
+
+Then the plugin will automatically try to use this binary from its directory.
+
 ### Using [TPM](https://github.com/tmux-plugins/tpm)
 
 ```
