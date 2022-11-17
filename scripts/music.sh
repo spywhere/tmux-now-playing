@@ -4,6 +4,7 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 source "$CURRENT_DIR/cache.sh"
 source "$CURRENT_DIR/helpers.sh"
+source "$CURRENT_DIR/shada.sh"
 
 players=(
   "$(dirname "$CURRENT_DIR")/players/mpd.sh"
@@ -31,19 +32,9 @@ main() {
   fi
 
   if test -z "$remote_command" && test -n "$NOW_PLAYING_SHADA"; then
-    if test -f "$NOW_PLAYING_SHADA"; then
-      local app="$(cat "$NOW_PLAYING_SHADA" | awk 'NR==1')"
-
-      if test "$app" != "tmux"; then
-        local time="$(cat "$NOW_PLAYING_SHADA" | awk 'NR==2')"
-
-        if test "$(date '+%s')" -lt "$(( time + 10 ))"; then
-          printf '%s' "$(get_tmux_option "@now-playing-shared-session" "")"
-          exit
-        else
-          rm -f "$NOW_PLAYING_SHADA"
-        fi
-      fi
+    if has_shared_session; then
+      get_shared_status
+      exit
     fi
   fi
 
