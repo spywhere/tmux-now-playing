@@ -9,6 +9,19 @@ self_priority() {
   get_tmux_option "@now-playing-shared-session-priority" "0"
 }
 
+get_command() {
+  get_tmux_option "@now-playing-shared-session-command" ""
+}
+
+active_commands() {
+  tmux list-panes -a -F '#{pane_current_command}' -f '#{window_active}'
+}
+
+string_contain() {
+  test -z "${1##*$2*}"
+  return $?
+}
+
 read_shada() {
   awk "NR==$1" "$NOW_PLAYING_SHADA"
 }
@@ -29,9 +42,24 @@ has_shared_session() {
     return 1
   fi
 
+  local command="$(get_command)"
+
+  if test -n "$command"; then
+    local has_take_over=0
+    for active_cmd in $(active_commands); do
+      if string_contain "$command" "$active_cmd"; then
+        has_take_over=1
+      fi
+    done
+
+    if test "$has_take_over" -eq 0; then
+      return 1
+    fi
+  fi
+
   local priority="$(read_shada 1)"
 
-  if test "$priority" < "$(self_priority)"; then
+  if test "$priority" -lt "$(self_priority)"; then
     # self has higher priority
     write_shada
     return 1
