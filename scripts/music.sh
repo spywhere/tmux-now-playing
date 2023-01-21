@@ -24,6 +24,13 @@ send_command() {
   return 1
 }
 
+replace() {
+  local str="$1"
+  local find="$2"
+  local replacement="${3//&/\\&}"
+  printf '%s' "${str//$find/$replacement}"
+}
+
 main() {
   local remote_command=""
 
@@ -135,24 +142,22 @@ main() {
     if test "$(printf "%s" "${interpolation_value[$i]}" | wc -m)" -gt "$scrollable_threshold"; then
       exceeding_placeholder_count=$(( exceeding_placeholder_count + exceeding_count ))
     fi
-    status_format=${status_format//${interpolation_key[$i]}/${interpolation_value[$i]}}
-    scrollable_format_whole=${scrollable_format_whole//${interpolation_key[$i]}/${interpolation_value[$i]}}
+    status_format="$(replace "$status_format" "${interpolation_key[$i]}" "${interpolation_value[$i]}")"
+    scrollable_format_whole="$(replace "$scrollable_format_whole" "${interpolation_key[$i]}" "${interpolation_value[$i]}")"
   done
 
   if test "$exceeding_placeholder_count" -ge "$placeholder_length"; then
     scrollable_format="$("$scrolling_tool" "$scrollable_format_whole" "$(( placeholder_length * scrollable_threshold + non_placeholder_length ))" "$track_position")"
-    status_format="${status_format//${scrollable_format_key}/${scrollable_format}}"
   else
     local scrollable_value=(
       "$("$scrolling_tool" "$track_title" "$scrollable_threshold" "$track_position" "$track_title_length")"
       "$("$scrolling_tool" "$track_artist" "$scrollable_threshold" "$track_position" "$track_artist_length")"
     )
     for ((i=0; i<${#scrollable_key[@]}; i++)); do
-      scrollable_format=${scrollable_format//${scrollable_key[$i]}/${scrollable_value[$i]}}
+      scrollable_format="$(replace "$scrollable_format" "${scrollable_key[$i]}" "${scrollable_value[$i]}")"
     done
-
-    status_format="${status_format//${scrollable_format_key}/${scrollable_format}}"
   fi
+  status_format="$(replace "$status_format" "$scrollable_format_key" "$scrollable_format")"
 
   printf "%s" "$status_format"
 }
