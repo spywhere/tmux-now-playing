@@ -23,29 +23,31 @@ main() {
   update_tmux_option "status-right"
   update_tmux_option "status-left"
 
+  local keytable="$(get_tmux_option "@now-playing-play-keytable" "prefix")"
+
   local keys="$(get_tmux_option "@now-playing-play-pause-key" ",")"
   local key
   for key in $keys; do
-    tmux unbind "$key"
-    tmux bind-key "$key" run-shell -b "bash $CURRENT_DIR/scripts/music.sh --cmd pause"
+    tmux unbind -T "$keytable" "$key"
+    tmux bind-key -T "$keytable" "$key" run-shell -b "bash $CURRENT_DIR/scripts/music.sh --cmd pause"
   done
 
   keys="$(get_tmux_option "@now-playing-stop-key" ".")"
   for key in $keys; do
-    tmux unbind "$key"
-    tmux bind-key "$key" run-shell -b "bash $CURRENT_DIR/scripts/music.sh --cmd stop"
+    tmux unbind -T "$keytable" "$key"
+    tmux bind-key -T "$keytable" "$key" run-shell -b "bash $CURRENT_DIR/scripts/music.sh --cmd stop"
   done
 
   keys="$(get_tmux_option "@now-playing-previous-key" "\\;")"
   for key in $keys; do
-    tmux unbind "$key"
-    tmux bind-key "$key" run-shell -b "bash $CURRENT_DIR/scripts/music.sh --cmd previous"
+    tmux unbind -T "$keytable" "$key"
+    tmux bind-key -T "$keytable" "$key" run-shell -b "bash $CURRENT_DIR/scripts/music.sh --cmd previous"
   done
 
   keys="$(get_tmux_option "@now-playing-next-key" "'")"
   for key in $keys; do
-    tmux unbind "$key"
-    tmux bind-key "$key" run-shell -b "bash $CURRENT_DIR/scripts/music.sh --cmd next"
+    tmux unbind -T "$keytable" "$key"
+    tmux bind-key -T "$keytable" "$key" run-shell -b "bash $CURRENT_DIR/scripts/music.sh --cmd next"
   done
 }
 
