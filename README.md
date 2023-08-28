@@ -45,7 +45,7 @@ Description: A string to display for `{icon}` component when the music player
 is paused  
 Default: ` ` (empty space)  
 Values: string
-- @now-playing-play-keytable
+- @now-playing-play-keytable  
 Description: A string that is bound in the key table for combinating keys.  
 Default: `prefix`  
 Values: string
