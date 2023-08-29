@@ -23,7 +23,7 @@ main() {
   update_tmux_option "status-right"
   update_tmux_option "status-left"
 
-  local keytable="$(get_tmux_option "@now-playing-play-keytable" "prefix")"
+  local keytable="$(get_tmux_option "@now-playing-keytable" "prefix")"
 
   local keys="$(get_tmux_option "@now-playing-play-pause-key" ",")"
   local key
