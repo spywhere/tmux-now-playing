@@ -164,19 +164,6 @@ functionalities (most of these tools should be already installed on most unix sy
 - `uname`
 - `wc`
 
-### Scroll Tool
-
-This plugin shipped with a few optimized scroller.
-
-If you have Neovim v0.9 or later, it will try to use that for a scrolling function.
-Otherwise, you can build the scroller tool for faster performance on scrollable components using the following command.
-
-```sh
-$CC -o scroll scroll.c
-```
-
-Then the plugin will automatically try to use this binary from its directory.
-
 ### Using [TPM](https://github.com/tmux-plugins/tpm)
 
 ```

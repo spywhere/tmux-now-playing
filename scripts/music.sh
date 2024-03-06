@@ -44,6 +44,21 @@ check_neovim() {
   return 0
 }
 
+timer="$(gdate '+%s.%N')"
+cum_time="0.00000000"
+clock() {
+  if test -n "$1"; then
+    if test "$1" = "-"; then
+      printf '\ntotal time: %s\n' "$cum_time" >&2
+    else
+      time_diff="$(echo "$(gdate '+%s.%N') - $timer" | bc)"
+      cum_time="$(echo "$cum_time + $time_diff" | bc)"
+      printf '%s [took %s]\n' "$1" "$time_diff" >&2
+    fi
+  fi
+  timer="$(gdate '+%s.%N')"
+}
+
 main() {
   local remote_command=""
 
@@ -51,30 +66,36 @@ main() {
     remote_command="$2"
   fi
 
+  clock
   if test -z "$remote_command" && test -n "$NOW_PLAYING_SHADA"; then
     if has_shared_session; then
       get_shared_status
       exit
     fi
   fi
+  clock 'shared session check'
 
   local music_data=""
 
-  for ((i=0; i<${#players[@]}; i++)); do
-    if test -z "$music_data"; then
-      source "${players[$i]}"
+  clock
+  _player() {
+    for ((i=0; i<${#players[@]}; i++)); do
+      if test -z "$music_data"; then
+        source "${players[$i]}"
 
-      if is_playing; then
-        # if running as a remote control
-        if test -n "$remote_command"; then
-          send_command "$remote_command"
-          exit
+        if is_playing; then
+          printf '%s' "${players[$i]}"
+          return
         fi
-
-        music_data="$(get_music_data)"
       fi
-    fi
-  done
+    done
+  }
+  local working_player="$(_cache_value player _player 10)"
+  if test -n "$working_player"; then
+    source "$working_player"
+    music_data="$(get_music_data)"
+  fi
+  clock "iterate music players: $working_player"
 
   if test -z "$music_data"; then
     # no player is running
@@ -100,6 +121,7 @@ main() {
     fi
   fi
 
+  clock
   local track_position="$(printf "%s" "$music_data" | awk 'NR==2')"
   local track_duration="$(printf "%s" "$music_data" | awk 'NR==3')"
   local track_title="$(printf "%s" "$music_data" | awk 'NR==4')"
@@ -107,6 +129,7 @@ main() {
   local track_artist="$(printf "%s" "$music_data" | awk 'NR==5')"
   local track_artist_length="$(printf "%s" "$track_artist" | wc -m)"
   local app_name="$(printf "%s" "$music_data" | awk 'NR==6')"
+  clock 'extract data'
 
   local interpolation_key=(
     "{icon}"
@@ -119,6 +142,7 @@ main() {
     "{percent}"
     "{app}"
   )
+  clock
   local interpolation_value=(
     "$player_icon"
     "$track_title"
@@ -130,18 +154,14 @@ main() {
     "$(( track_position * 100 / track_duration ))"
     "$app_name"
   )
+  clock 'prepare interpolated data'
   local scrollable_threshold="$(get_tmux_option "@now-playing-scrollable-threshold" "25")"
   local scrollable_key=(
     "{title}"
     "{artist}"
   )
-  local scrolling_tool="scrolling_text"
-  if check_neovim; then
-    scrolling_tool="scrolling_text_nvim"
-  elif test -n "$(command -v "$(dirname "$CURRENT_DIR")/scroll")"; then
-    scrolling_tool="scrolling_text_bin"
-  fi
 
+  clock
   local default_format="{icon} {scrollable} [{position}/{duration}]"
   local status_format="$(get_tmux_option "@now-playing-status-format" "$default_format")"
 
@@ -150,7 +170,9 @@ main() {
   local scrollable_format_whole="$(get_tmux_option "@now-playing-scrollable-format" "{artist} - {title}")"
   local placeholder_length="$(printf "%s" "$scrollable_format" | grep -o '{[^}]*}' | wc -l)"
   local non_placeholder_length="$(printf "%s" "$scrollable_format" | sed 's/{[^}]*}//g' | wc -m)"
+  clock 'process formats'
 
+  clock
   local exceeding_placeholder_count=0
   for ((i=0; i<${#interpolation_key[@]}; i++)); do
     exceeding_count="$(printf "%s" "$scrollable_format" | grep -o "${interpolation_key[$i]}" | wc -l)"
@@ -160,21 +182,25 @@ main() {
     status_format="$(replace "$status_format" "${interpolation_key[$i]}" "${interpolation_value[$i]}")"
     scrollable_format_whole="$(replace "$scrollable_format_whole" "${interpolation_key[$i]}" "${interpolation_value[$i]}")"
   done
+  clock 'interpolate status format'
 
+  clock
   if test "$exceeding_placeholder_count" -ge "$placeholder_length"; then
-    scrollable_format="$("$scrolling_tool" "$scrollable_format_whole" "$(( placeholder_length * scrollable_threshold + non_placeholder_length ))" "$track_position")"
+    scrollable_format="$(scrolling_text "$scrollable_format_whole" "$(( placeholder_length * scrollable_threshold + non_placeholder_length ))" "$track_position")"
   else
     local scrollable_value=(
-      "$("$scrolling_tool" "$track_title" "$scrollable_threshold" "$track_position" "$track_title_length")"
-      "$("$scrolling_tool" "$track_artist" "$scrollable_threshold" "$track_position" "$track_artist_length")"
+      "$(scrolling_text "$track_title" "$scrollable_threshold" "$track_position" "$track_title_length")"
+      "$(scrolling_text "$track_artist" "$scrollable_threshold" "$track_position" "$track_artist_length")"
     )
     for ((i=0; i<${#scrollable_key[@]}; i++)); do
       scrollable_format="$(replace "$scrollable_format" "${scrollable_key[$i]}" "${scrollable_value[$i]}")"
     done
   fi
+  clock 'scroll text'
   status_format="$(replace "$status_format" "$scrollable_format_key" "$scrollable_format")"
 
   printf "%s" "$status_format"
+  clock -
 }
 
 main "$@"

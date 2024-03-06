@@ -59,9 +59,11 @@ _put_cache_value() {
 _cache_value() {
   __key="$1"
   __cmd="$2"
+  __timeout="$3"
   shift
   shift
-  __value="$(_get_cache_value "$__key")"
+  shift
+  __value="$(_get_cache_value "$__key" "$__timeout")"
   if test -z "$__value"; then
     _put_cache_value "yes" "$__key" "$($__cmd "$@")"
     return
