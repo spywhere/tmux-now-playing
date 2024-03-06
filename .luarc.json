@@ -1,0 +1,9 @@
+{
+  "runtime": {
+    "version": "5.1"
+  },
+  "diagnostics": {
+    "globals": ["vim"]
+  },
+  "workspace.checkThirdParty": false
+}

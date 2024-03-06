@@ -31,6 +31,19 @@ replace() {
   printf '%s' "${str//$find/$replacement}"
 }
 
+check_neovim() {
+  if test -z "$(command -v nvim)"; then
+    return 1
+  fi
+  version="$(nvim --version | head -n 1 | cut -d'v' -f2)"
+  major="$(echo "$version" | cut -d'.' -f1)"
+  minor="$(echo "$version" | cut -d'.' -f2)"
+  if test "$major" -eq 0 && test "$minor" -lt 9; then
+    return 1
+  fi
+  return 0
+}
+
 main() {
   local remote_command=""
 
@@ -123,7 +136,9 @@ main() {
     "{artist}"
   )
   local scrolling_tool="scrolling_text"
-  if test -n "$(command -v "$(dirname "$CURRENT_DIR")/scroll")"; then
+  if check_neovim; then
+    scrolling_tool="scrolling_text_nvim"
+  elif test -n "$(command -v "$(dirname "$CURRENT_DIR")/scroll")"; then
     scrolling_tool="scrolling_text_bin"
   fi
 

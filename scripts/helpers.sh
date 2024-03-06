@@ -18,6 +18,20 @@ get_tmux_option() {
   fi
 }
 
+scrolling_text_nvim() {
+  local text_length
+  if test $# -ge 4; then
+    text_length="$4"
+  else
+    text_length=$(printf "%s" "$1" | wc -m)
+  fi
+  if test "$text_length" -gt "$2"; then
+    nvim -l "$(dirname "$CURRENT_DIR")/scroll.lua" "$1" "$3" "$2"
+  else
+    printf "%s" "$1"
+  fi
+}
+
 scrolling_text_bin() {
   local text_length
   if test $# -ge 4; then
