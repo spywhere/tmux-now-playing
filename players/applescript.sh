@@ -30,11 +30,7 @@ is_playing() {
 }
 
 get_music_data() {
-  _music_data() {
-    osascript -l JavaScript "$(dirname "$CURRENT_DIR")/players/applescript.js"
-  }
-
-  local music_data="$(_cache_value music_data _music_data)"
+  local music_data="$(osascript -l JavaScript "$(dirname "$CURRENT_DIR")/players/applescript.js")"
 
   if test -z "$1"; then
     printf "%s" "$music_data" | awk 'NR<=6'

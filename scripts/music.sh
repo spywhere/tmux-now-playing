@@ -97,11 +97,13 @@ main() {
     done
   }
   local working_player="$(_cache_value player _player 10)"
+  clock "iterate music players: $working_player"
+  clock
   if test -n "$working_player"; then
     source "$working_player"
     music_data="$(get_music_data)"
   fi
-  clock "iterate music players: $working_player"
+  clock "get music data"
 
   if test -z "$music_data"; then
     # no player is running
