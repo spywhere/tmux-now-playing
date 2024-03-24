@@ -79,7 +79,7 @@ Values: `yes` or `no`
 Description: A number of seconds to refresh when the music player is playing  
 Default: `1`  
 Values: number
-- `@now-playing-paused-interval`
+- `@now-playing-paused-interval`  
 Description: A number of seconds to refresh when the music player is paused  
 Default: `5`  
 Values: number

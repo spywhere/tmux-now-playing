@@ -31,40 +31,6 @@ replace() {
   printf '%s' "${str//$find/$replacement}"
 }
 
-check_neovim() {
-  if test -z "$(command -v nvim)"; then
-    return 1
-  fi
-  version="$(nvim --version | head -n 1 | cut -d'v' -f2)"
-  major="$(echo "$version" | cut -d'.' -f1)"
-  minor="$(echo "$version" | cut -d'.' -f2)"
-  if test "$major" -eq 0 && test "$minor" -lt 9; then
-    return 1
-  fi
-  return 0
-}
-
-if test -n "$(command -v gdate)"; then
-  timer="$(gdate '+%s.%N')"
-  cum_time="0.00000000"
-  clock() {
-    if test -n "$1"; then
-      if test "$1" = "-"; then
-        printf '\ntotal time: %s\n' "$cum_time" >&2
-      else
-        time_diff="$(echo "$(gdate '+%s.%N') - $timer" | bc)"
-        cum_time="$(echo "$cum_time + $time_diff" | bc)"
-        printf '%s [took %s]\n' "$1" "$time_diff" >&2
-      fi
-    fi
-    timer="$(gdate '+%s.%N')"
-  }
-else
-  clock() {
-    return
-  }
-fi
-
 main() {
   local remote_command=""
 
