@@ -12,6 +12,7 @@ Showing currently playing track in tmux status bar with music controls
 - (Windows through WSL only, experimental) `cscript` (Windows Script Host) - enable the following integrations and more in the future
   - iTunes
 - `mpd` ([Music Player Daemon](https://www.musicpd.org)) through `nc` (netcat)
+- [`nowplaying-cli`](https://github.com/kirtan-shah/nowplaying-cli)
 
 ## Configurations
 
@@ -49,6 +50,7 @@ Values: string
 Description: A string that is bound in the key table for combinating keys.  
 Default: `prefix`  
 Values: string
+
 ### Key Bindings
 
 - `@now-playing-play-pause-key`  

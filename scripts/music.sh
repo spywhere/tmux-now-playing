@@ -7,6 +7,7 @@ source "$CURRENT_DIR/helpers.sh"
 source "$CURRENT_DIR/shada.sh"
 
 players=(
+  "$(dirname "$CURRENT_DIR")/players/nowplaying-cli.sh"
   "$(dirname "$CURRENT_DIR")/players/mpd.sh"
   "$(dirname "$CURRENT_DIR")/players/applescript.sh"
   "$(dirname "$CURRENT_DIR")/players/cscript.sh"
