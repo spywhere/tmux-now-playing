@@ -5,6 +5,15 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$(dirname "$CURRENT_DIR")/scripts/cache.sh"
 source "$(dirname "$CURRENT_DIR")/scripts/helpers.sh"
 
+INCLUDE_MUSIC="$(get_tmux_option "@now-playing-nowplaying-cli-include-music-app" "no")"
+
+include_music() {
+  case "$INCLUDE_MUSIC" in
+    yes|true|1) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
 is_running() {
   if test -n "$(command -v nowplaying-cli)"; then
     return 0
@@ -18,9 +27,13 @@ is_playing() {
     return 1
   fi
 
-  local playback_rate="$(nowplaying-cli get playbackRate)"
+  local data="$(nowplaying-cli get playbackRate isMusicApp)"
+  local playback_rate="$(printf "%s" "$data" | awk 'NR==1{ print $0 }')"
+  local is_music_app="$(printf "%s" "$data" | awk 'NR==2{ print $0 }')"
 
   if test "$playback_rate" = "null"; then
+    return 1
+  elif test "$is_music_app" = "1" && ! include_music; then
     return 1
   else
     return 0

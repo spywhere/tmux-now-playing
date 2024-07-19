@@ -96,6 +96,11 @@ Values: string
 Description: A port number of MPD server  
 Default: `6600`  
 Values: number
+- `@now-playing-nowplaying-cli-include-music-app`  
+Description: A boolean string to indicate whether to have Apple's Music app
+processed through nowplaying-cli (which is quite flaky) or not  
+Default: `no`  
+Values: `0` / `no` / `false` / `1` / `yes` / `true`
 
 #### Components
 
