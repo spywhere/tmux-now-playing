@@ -68,6 +68,13 @@ main() {
   clock
   if test -n "$working_player"; then
     source "$working_player"
+
+    # if running as a remote control
+    if test -n "$remote_command"; then
+      send_command "$remote_command"
+      exit
+    fi
+
     music_data="$(get_music_data)"
   fi
   clock "get music data"
