@@ -51,6 +51,15 @@ Description: A string to display for `{icon}` component when the music player
 is paused  
 Default: ` ` (empty space)  
 Values: string
+- `@now-playing-stopped-icon`
+Description: A string to display for `{icon}` component when the music player
+is stopped (supported by AppleScript and cscript players)
+Default: `` (empty string)
+Values: string
+- `@now-playing-idle-icon`
+Description: A string to display for `{icon}` component when there is no music player running
+Default: `` (empty string)
+Values: string
 - `@now-playing-keytable`  
 Description: A string that is bound in the key table for combinating keys.  
 Default: `prefix`  
@@ -121,8 +130,9 @@ Values: `0` / `no` / `false` / `1` / `yes` / `true`
 
 #### Components
 
-- `{icon}` A string from `@now-playing-playing-icon` or
-`@now-playing-paused-icon` depends on the music player state
+- `{icon}` A string from `@now-playing-playing-icon`,
+`@now-playing-paused-icon`, `@now-playing-stopped-icon`, or
+`@now-playing-idle-icon` depends on the music player state
 - `{scrollable}` A scrolling interpolated string from
 `@now-playing-scrollable-format` (see scrollable component section below for more details)
 - `{title}` (Scrollable) A track title
