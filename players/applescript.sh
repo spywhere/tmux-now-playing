@@ -9,7 +9,14 @@ source "$(dirname "$CURRENT_DIR")/scripts/helpers.sh"
 is_running() {
   # Only macOS with osascript command
   if test "$(uname)" = "Darwin" -a -n "$(command -v osascript)"; then
-    return 0
+    # Check if we're on macOS Tahoe (Darwin 25) or above
+    local darwin_version="$(uname -r | cut -d. -f1)"
+    if test "$darwin_version" -ge 25; then
+      # macOS Tahoe and above - AppleScript currentTrack is broken
+      return 1
+    else
+      return 0
+    fi
   else
     return 1
   fi

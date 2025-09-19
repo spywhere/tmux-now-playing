@@ -17,7 +17,8 @@ Showing currently playing track in tmux status bar with music controls
   - VLC
 - `mpd` ([Music Player Daemon](https://www.musicpd.org)) through `nc` (netcat)
 - [Cider](https://cider.sh) through `curl` and `jq`
-- [`nowplaying-cli`](https://github.com/kirtan-shah/nowplaying-cli)
+- [`nowplaying-cli`](https://github.com/kirtan-shah/nowplaying-cli) (Note: [not compatible with macOS Tahoe](https://github.com/kirtan-shah/nowplaying-cli/issues/28))
+- [`media-control`](https://github.com/ungive/media-control) - macOS media control CLI tool (recommended for macOS Tahoe and above)
 
 ## Configurations
 
@@ -126,6 +127,11 @@ Values: string (leave empty for no token)
 Description: A boolean string to indicate whether to have Apple's Music app
 processed through nowplaying-cli (which is quite flaky) or not  
 Default: `no`  
+Values: `0` / `no` / `false` / `1` / `yes` / `true`
+- `@now-playing-media-control-include-music-app`  
+Description: A boolean string to indicate whether to have Apple's Music app
+processed through media-control or not  
+Default: `yes`  
 Values: `0` / `no` / `false` / `1` / `yes` / `true`
 
 #### Components
